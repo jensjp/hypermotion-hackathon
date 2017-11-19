@@ -201,8 +201,8 @@ public class Event {
 				case 2 : this.desc = tokn; break;
 				case 3 : this.klass = tokn; break;
 				case 4 : this.subKlass = tokn; break;
-				case 5 : this.coordinates = new Coordinates(0, Double.parseDouble(tokn)); break;
-				case 6 : this.coordinates.setLat(Double.parseDouble(tokn)); break;
+				case 5 : this.coordinates = new Coordinates(Double.parseDouble(tokn), 0 ); break;
+				case 6 : this.coordinates.setLng(Double.parseDouble(tokn)); break;
 				case 7 : this.weight = Double.parseDouble(tokn); break;
 				case 8 : this.volume = Double.parseDouble(tokn); break;
 				case 9 : this.date = new GregorianCalendar(); 

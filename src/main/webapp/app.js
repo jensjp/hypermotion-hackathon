@@ -32,40 +32,45 @@ function createMap(optiData) {
 		var map = new google.maps.Map(document.getElementById('map_container'),
 				mapOptions);
 
-		$(optiData).each(function(index, value) {			
-
-			var marker = new google.maps.Marker({
-				position : value.coordinates,
-				title : value.place,
-				label : 'D',
-				animation : google.maps.Animation.DROP,
-				map : map
-			});
+		$(optiData).each(function(index, value) {	
 			
 			
-			if(value.suppliers != null){
-				$(value.suppliers).each(function(index, supplierData) {
-					
-					var marker = new google.maps.Marker({
-						position : supplierData.coordinates,
-						title : supplierData.place,
-						label : 'S',
-						animation : google.maps.Animation.DROP,
-						strokeColor : '#7ee17e',
-						map : map
-					});
-					
-					var flightPlanCoordinates = [ value.coordinates, supplierData.coordinates ];
-					var flightPath = new google.maps.Polyline({
-						path : flightPlanCoordinates,
-						geodesic : true,
-						strokeColor : '#b50303',
-						strokeOpacity : 1.0,
-						strokeWeight : 1
-					});
-					flightPath.setMap(map);
+				var marker = new google.maps.Marker({
+					position : value.coordinates,
+					title : value.place,
+					label : 'D',
+					animation : google.maps.Animation.DROP,
+					map : map
 				});
-			}
+				
+				
+				if(value.suppliers != null){
+					$(value.suppliers).each(function(index, supplierData) {
+						
+						var marker = new google.maps.Marker({
+							position : supplierData.coordinates,
+							title : supplierData.place+index,
+							label : 'S',
+							animation : google.maps.Animation.DROP,
+							strokeColor : '#7ee17e',
+							map : map
+						});
+						
+						var flightPlanCoordinates = [ value.coordinates, supplierData.coordinates ];
+						var flightPath = new google.maps.Polyline({
+							path : flightPlanCoordinates,
+							geodesic : true,
+							strokeColor : '#b50303',
+							strokeOpacity : 1.0,
+							strokeWeight : 1
+						});
+						flightPath.setMap(map);
+					});
+				}
+			
+			
+
+			
 		});
 	}
 }
