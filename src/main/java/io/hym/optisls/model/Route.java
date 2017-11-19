@@ -20,7 +20,7 @@ public class Route implements Serializable{
 	private double weight;
 	private double volume;
 	private double lat;
-	private double lon;
+	private double lng;
 	
 	/**
 	 * @return the airline
@@ -109,14 +109,14 @@ public class Route implements Serializable{
 	/**
 	 * @return the lon
 	 */
-	public double getLon() {
-		return lon;
+	public double getLng() {
+		return lng;
 	}
 	/**
 	 * @param lon the lon to set
 	 */
-	public void setLon(double lon) {
-		this.lon = lon;
+	public void setLng(double lon) {
+		this.lng = lon;
 	}
 	
 	
