@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.hym.optisls.model.Coordinates;
 import io.hym.optisls.model.Event;
 
 @RestController
@@ -44,9 +43,7 @@ public class EventController implements InitializingBean{
 	@RequestMapping("/search/{filter}")
 	public ResponseEntity<List<Event>> searchWithFilter(@PathVariable("filter") String filter) {
 		final int month = Integer.parseInt(filter);
-		
 		List<Event> answer = events.stream().filter(e -> e.getDate().get(Calendar.MONTH) == month).collect(Collectors.toList());
-		
 		return answer == null ? new ResponseEntity<List<Event>>(HttpStatus.INTERNAL_SERVER_ERROR)
 				: new ResponseEntity<List<Event>>(answer, HttpStatus.OK);
 	}

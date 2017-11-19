@@ -33,12 +33,10 @@ public class Application extends SpringBootServletInitializer{
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception{
-		/*
 		SpringApplication application = new SpringApplication(Application.class);
 		application.setWebEnvironment(true);
 		application.setBannerMode(Banner.Mode.OFF);
-		ConfigurableApplicationContext context = application.run(args);*/
-		EventSources.mapAirports();
+		ConfigurableApplicationContext context = application.run(args);
 	}
 
 }
