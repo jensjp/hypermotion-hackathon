@@ -10,6 +10,8 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import io.hym.optisls.sources.EventSources;
+
 /**
  * @author jens
  *
@@ -30,11 +32,13 @@ public class Application extends SpringBootServletInitializer{
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception{
+		/*
 		SpringApplication application = new SpringApplication(Application.class);
 		application.setWebEnvironment(true);
 		application.setBannerMode(Banner.Mode.OFF);
-		ConfigurableApplicationContext context = application.run(args);
+		ConfigurableApplicationContext context = application.run(args);*/
+		EventSources.retrieveAllPHQEvents();
 	}
 
 }

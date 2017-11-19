@@ -1,5 +1,7 @@
 package io.hym.optisls.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Coordinates {
 
 	private double lat;
@@ -26,4 +28,11 @@ public class Coordinates {
 		this.lng = lng;
 	}
 
+	@JsonIgnore
+	public String encode(){
+		StringBuilder sbul = new StringBuilder();
+		sbul.append(lat).append(",").append(lng);
+		return sbul.toString();
+	}
+	
 }

@@ -5,6 +5,8 @@ package io.hym.optisls.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * @author jens
  *
@@ -149,4 +151,18 @@ public class Event {
 		this.coordinates = coordinates;
 	}
 
+	@JsonIgnore
+	public String encode(){
+		StringBuilder sbul = new StringBuilder();
+		sbul.append(place).append(",")
+			.append(type).append(",")
+			.append(desc).append(",")
+			.append(klass).append(",")
+			.append(subKlass).append(",")
+			.append(coordinates.encode()).append(",")
+			.append(weight).append(",")
+			.append(volume);
+		return sbul.toString();
+	}
+	
 }
