@@ -36,7 +36,7 @@ function createMap(optiData) {
 
 			var marker = new google.maps.Marker({
 				position : value.coordinates,
-				// title : value,
+				title : value.place,
 				label : 'D',
 				animation : google.maps.Animation.DROP,
 				map : map
@@ -48,7 +48,7 @@ function createMap(optiData) {
 					
 					var marker = new google.maps.Marker({
 						position : supplierData.coordinates,
-						// title : value,
+						title : supplierData.place,
 						label : 'S',
 						animation : google.maps.Animation.DROP,
 						strokeColor : '#7ee17e',
