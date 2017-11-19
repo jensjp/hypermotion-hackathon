@@ -3,6 +3,7 @@
  */
 package io.hym.optisls.sources;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -41,10 +42,47 @@ import io.hym.optisls.model.Event;
  * @author jens
  *
  */
+@SuppressWarnings("all")
 public class EventSources {
 
 	static final String PHQ_DFS = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 	static final DateFormat PHQ_DF = new SimpleDateFormat(PHQ_DFS);
+	
+	public static void mapAirports() throws Exception {
+		BufferedWriter bw = Files.newBufferedWriter(Paths.get("/Users/jens/tmp", "predictHq_mapped.csv"), StandardOpenOption.CREATE);
+		BufferedReader br = Files.newBufferedReader(Paths.get("/Users/jens/tmp", "predictHq_x.csv"));
+		List<Event> events = new ArrayList<>();
+		WebClient client = WebClient.create("https://api.lufthansa.com/v1/references/airports/nearest/");
+		client.accept(MediaType.APPLICATION_JSON);
+		client.header("Authorization", "Bearer hnrh4aqx4vh4ze99s9ub7f2x");
+		for(String line = br.readLine(); line != null; line = br.readLine()){
+			System.out.println("Processing Line : " + line);
+			Event e = new Event();
+			events.add(e);
+			e.decode(line);
+			client.replacePath(e.getCoordinates().getLat() + "," + e.getCoordinates().getLng());
+			Map<String, Object> data = mapToJson((InputStream)client.get().getEntity());
+			data = (Map<String, Object>)data.get("NearestAirportResource");
+			data = (Map<String, Object>)data.get("Airports");
+			List<Map<String, Object>> airports = (List<Map<String, Object>>)data.get("Airport"); 
+			if(airports != null){
+				for(Map<String, Object> arp : airports){
+					e.setPlace((String)arp.get("AirportCode"));
+					System.out.println("Got :" + e.getPlace());
+					break;
+				}
+			}else{
+				System.err.println("Unable to find airport");
+			}
+			Thread.sleep(500);
+		}
+		for(Event e : events){
+			bw.write(e.encode());
+			bw.write("\n");
+		}
+		bw.flush();
+		bw.close();
+	}
 	
 	public static void retrieveAllPHQEvents() throws Exception{
 		List<Event> events = new ArrayList<>();

@@ -38,7 +38,7 @@ public class Application extends SpringBootServletInitializer{
 		application.setWebEnvironment(true);
 		application.setBannerMode(Banner.Mode.OFF);
 		ConfigurableApplicationContext context = application.run(args);*/
-		EventSources.retrieveAllPHQEvents();
+		EventSources.mapAirports();
 	}
 
 }
