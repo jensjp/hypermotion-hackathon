@@ -227,7 +227,7 @@ public class Event {
 		builder.append(", type=");
 		builder.append(type);
 		builder.append(", date=");
-		builder.append(date);
+		builder.append(DF.format(date.getTime()));
 		builder.append(", desc=");
 		builder.append(desc);
 		builder.append(", klass=");
@@ -242,7 +242,7 @@ public class Event {
 		builder.append(volume);
 		builder.append(", suppliers=");
 		builder.append(suppliers);
-		builder.append("]");
+		builder.append("]\n");
 		return builder.toString();
 	}
 	
