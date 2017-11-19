@@ -3,6 +3,9 @@
  */
 package io.hym.optisls.model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,6 +18,7 @@ public class Event {
 
 	private String place;
 	private String type;
+	private Calendar date;
 	private String desc;
 	private String klass;
 	private String subKlass;
@@ -150,7 +154,23 @@ public class Event {
 	public void setCoordinates(Coordinates coordinates) {
 		this.coordinates = coordinates;
 	}
+	
+	/**
+	 * @return the date
+	 */
+	public Calendar getDate() {
+		return date;
+	}
 
+	/**
+	 * @param date the date to set
+	 */
+	public void setDate(Calendar date) {
+		this.date = date;
+	}
+
+	static final DateFormat DF = new SimpleDateFormat("yyyyMMdd");
+	
 	@JsonIgnore
 	public String encode(){
 		StringBuilder sbul = new StringBuilder();
@@ -161,7 +181,9 @@ public class Event {
 			.append(subKlass).append(",")
 			.append(coordinates.encode()).append(",")
 			.append(weight).append(",")
-			.append(volume);
+			.append(volume).append(",")
+			.append(DF.format(this.date.getTime()))
+			;
 		return sbul.toString();
 	}
 	
