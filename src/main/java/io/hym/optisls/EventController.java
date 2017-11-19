@@ -35,7 +35,10 @@ public class EventController implements InitializingBean{
 		for(String line = br.readLine(); line != null; line = br.readLine()){
 			Event e = new Event();
 			e.decode(line);
-			events.add(e);
+			if(e.getDate() == null)
+				System.err.println(line);
+			else
+				events.add(e);
 		}
 		logger.info("loaded event DB size : {}", events.size());
 	}
@@ -48,4 +51,19 @@ public class EventController implements InitializingBean{
 				: new ResponseEntity<List<Event>>(answer, HttpStatus.OK);
 	}
 
+	/**
+	 * @return the events
+	 */
+	public List<Event> getEvents() {
+		return events;
+	}
+
+	/**
+	 * @param events the events to set
+	 */
+	public void setEvents(List<Event> events) {
+		this.events = events;
+	}
+
+	
 }
