@@ -4,9 +4,12 @@
 package io.hym.optisls.model;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -17,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Event {
 
 	private String place;
-	private String type;
+	private String type = "Port";
 	private Calendar date;
 	private String desc;
 	private String klass;
@@ -185,6 +188,32 @@ public class Event {
 			.append(DF.format(this.date.getTime()))
 			;
 		return sbul.toString();
+	}
+
+	static final Pattern ptrn = Pattern.compile(",");
+	public void decode(String line){
+		String[] splts = ptrn.split(line);
+		for(int x = 0 ; x < splts.length; x++){
+			String tokn = splts[x];
+			switch(x){
+				case 0 : this.place = tokn; break;
+				case 1 : this.type = tokn; break;
+				case 2 : this.desc = tokn; break;
+				case 3 : this.klass = tokn; break;
+				case 4 : this.subKlass = tokn; break;
+				case 5 : this.coordinates = new Coordinates(0, Double.parseDouble(tokn)); break;
+				case 6 : this.coordinates.setLat(Double.parseDouble(tokn)); break;
+				case 7 : this.weight = Double.parseDouble(tokn); break;
+				case 8 : this.volume = Double.parseDouble(tokn); break;
+				case 9 : this.date = new GregorianCalendar(); 
+				try {
+					this.date.setTime(DF.parse(tokn));
+				} catch (ParseException e) {
+					throw new RuntimeException(e);
+				} 
+					break; 
+			}
+		}
 	}
 	
 }

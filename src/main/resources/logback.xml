@@ -12,7 +12,7 @@
  <logger name="com.fasterxml.jackson" level="DEBUG" />
  -->
   <!-- Setting the root level of logging to INFO -->
-  <root level="DEBUG">
+  <root level="INFO">
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>
