@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- Log message format -->
+    <encoder>
+      <pattern>%d [%thread] %-5level %logger{36} - %msg%n %ex{4}</pattern>
+    </encoder>
+  </appender>
+ <logger name="org.springframework" level="INFO" />
+ <!-- 
+ <logger name="org.apache.cxf" level="DEBUG" />
+ <logger name="com.fasterxml.jackson" level="DEBUG" />
+ -->
+  <!-- Setting the root level of logging to INFO -->
+  <root level="DEBUG">
+    <appender-ref ref="STDOUT" />
+  </root>
+</configuration>
