@@ -31,23 +31,67 @@
 	type="text/javascript"></script>
 
 <script src="app.js" type="text/javascript"></script>
+<style>
+body {
+	padding: 20px;
+}
+
+.border-no-right {
+	border-top: 1px solid #dedede;
+	border-left: 1px solid #dedede;
+	border-bottom: 1px solid #dedede;
+}
+
+.border-no-left {
+	border-top: 1px solid #dedede;
+	border-right: 1px solid #dedede;
+	border-bottom: 1px solid #dedede;
+}
+
+.border-no-left-right {
+	border-top: 1px solid #dedede;
+	border-bottom: 1px solid #dedede;
+}
+
+.month-box {
+	width: 150px;
+	height: 20px;
+	float: left;
+	cursor: pointer;
+	margin-top: 10px;
+	text-align: center;
+	font-family: "proxima-nova-soft", "Proxima Nova Soft", Helvetica, Arial,
+		sans-serif;
+	font-size: 14px;
+}
+
+.month-div-box {
+	width: 10px;
+	height: 40px;
+	border: 1px solid #dedede;
+	float: left;
+}
+
+.month-checked {
+	background-color: #900c3f !important;
+	color: #FFF !important;
+}
+</style>
 </head>
 <body>
-	<div style="padding: 10px 0px 10px 0px;">
-		<div class="dropdown">
-			<button class="btn btn-default dropdown-toggle" type="button"
-				id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true"
-				aria-expanded="true">
-				Dropdown <span class="caret"></span>
-			</button>
-			<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-				<li><a href="#!" class="month-selector" data-val="DEC">DEC</a></li>
-				<li><a href="#!" class="month-selector" data-val="JAN">JAN</a></li>
-				<li><a href="#!" class="month-selector" data-val="FEB">FEB</a></li>
-			</ul>
-		</div>
+	<div>
+		<div class="border-no-right month-box" data-val="SEP">SEP</div>
+		<div class="month-div-box" style=""></div>
+		<div class="border-no-left-right month-box" data-val="OCT">OCT</div>
+		<div class="month-div-box" style=""></div>
+		<div class="border-no-left-right month-box" data-val="NOV">NOV</div>
+		<div class="month-div-box" style=""></div>
+		<div class="border-no-left month-box" data-val="DEC">DEC</div>
 	</div>
 
-	<div id="map_container" style="width: 1300px; height: 600px;"></div>
+	<div style="clear: both"></div>
+
+	<div id="map_container"
+		style="margin-top: 20px; width: 1300px; height: 600px;"></div>
 </body>
 </html>
