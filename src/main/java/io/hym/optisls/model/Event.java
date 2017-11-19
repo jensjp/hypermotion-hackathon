@@ -215,5 +215,37 @@ public class Event {
 			}
 		}
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Event [place=");
+		builder.append(place);
+		builder.append(", type=");
+		builder.append(type);
+		builder.append(", date=");
+		builder.append(date);
+		builder.append(", desc=");
+		builder.append(desc);
+		builder.append(", klass=");
+		builder.append(klass);
+		builder.append(", subKlass=");
+		builder.append(subKlass);
+		builder.append(", coordinates=");
+		builder.append(coordinates);
+		builder.append(", weight=");
+		builder.append(weight);
+		builder.append(", volume=");
+		builder.append(volume);
+		builder.append(", suppliers=");
+		builder.append(suppliers);
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	
 	
 }
