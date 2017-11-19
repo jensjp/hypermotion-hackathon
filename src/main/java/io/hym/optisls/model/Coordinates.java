@@ -34,5 +34,21 @@ public class Coordinates {
 		sbul.append(lat).append(",").append(lng);
 		return sbul.toString();
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Coordinates [lat=");
+		builder.append(lat);
+		builder.append(", lng=");
+		builder.append(lng);
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	
 	
 }

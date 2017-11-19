@@ -47,6 +47,7 @@ public class EventController implements InitializingBean{
 	public ResponseEntity<List<Event>> searchWithFilter(@PathVariable("filter") String filter) {
 		final int month = Integer.parseInt(filter);
 		List<Event> answer = events.stream().filter(e -> e.getDate().get(Calendar.MONTH) == month).collect(Collectors.toList());
+		logger.debug("Filer {}, Result {}", month, answer);
 		return answer == null ? new ResponseEntity<List<Event>>(HttpStatus.INTERNAL_SERVER_ERROR)
 				: new ResponseEntity<List<Event>>(answer, HttpStatus.OK);
 	}
