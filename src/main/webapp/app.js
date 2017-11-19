@@ -23,7 +23,7 @@ function createMap(optiData) {
 	if (optiData != null) {
 		
 		var mapOptions = {
-				center : optiData[0],
+				center : optiData[0].coordinates,
 				zoom : 3,
 				mapTypeId : google.maps.MapTypeId.ROADMAP
 			};
@@ -32,6 +32,8 @@ function createMap(optiData) {
 				mapOptions);
 
 		$(optiData).each(function(index, value) {
+			
+			console.log(value.coordinates); 
 
 			var marker = new google.maps.Marker({
 				position : value.coordinates,
