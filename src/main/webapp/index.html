@@ -55,7 +55,7 @@ body {
 
 .month-box {
 	width: 150px;
-	height: 20px;
+	height: 30px;
 	float: left;
 	cursor: pointer;
 	margin-top: 10px;
@@ -66,8 +66,8 @@ body {
 }
 
 .month-div-box {
-	width: 10px;
-	height: 40px;
+	width: 15px;
+	height: 50px;
 	border: 1px solid #dedede;
 	float: left;
 }
@@ -79,17 +79,19 @@ body {
 </style>
 </head>
 <body>
-	<div>
+	<div style="width: 50%; margin: 0 auto;">
 		<div class="border-no-right month-box" data-val="11">DEC</div>
-		<div class="month-div-box" style=""></div>
+		<div class="month-div-box" style="">&nbsp;</div>
 		<div class="border-no-left-right month-box" data-val="0">JAN</div>
-		<div class="month-div-box" style=""></div>
+		<div class="month-div-box" style="">&nbsp;</div>
 		<div class="border-no-left-right month-box" data-val="1">FEB</div>
-		<div class="month-div-box" style=""></div>
+		<div class="month-div-box" style="">&nbsp;</div>
 		<div class="border-no-left month-box" data-val="2">MAR</div>
+
+		<div style="clear: both"></div>
 	</div>
 
-	<div style="clear: both"></div>
+
 
 	<div id="map_container"
 		style="margin-top: 20px; width: 1300px; height: 600px;"></div>
