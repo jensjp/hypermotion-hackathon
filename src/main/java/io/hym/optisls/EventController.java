@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.hym.optisls.model.Event;
+import io.hym.optisls.model.Supplier;
+import io.hym.optisls.sources.EventSources;
 
 @RestController
 public class EventController implements InitializingBean{
@@ -35,6 +37,38 @@ public class EventController implements InitializingBean{
 		for(String line = br.readLine(); line != null; line = br.readLine()){
 			Event e = new Event();
 			e.decode(line);
+			
+			if(e.getType().equals("sports")) {					
+				Supplier s=new Supplier();
+				s.setPlace("New York");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("JFK"));
+				s.setVolume(20.0);
+				s.setWeight(2000.0);
+				e.getSuppliers().add(s);					
+			}
+			
+			if(e.getType().equals("festivals")) {					
+				Supplier s=new Supplier();
+				s.setPlace("Chicago");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("ORD"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				e.getSuppliers().add(s);					
+			}
+			
+			if(e.getType().equals("disasters")) {					
+				Supplier s=new Supplier();
+				s.setPlace("Frankfurt am Main");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("FRA"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				e.getSuppliers().add(s);					
+			}
+	
+			
 			if(e.getDate() == null)
 				System.err.println(line);
 			else
@@ -42,6 +76,8 @@ public class EventController implements InitializingBean{
 		}
 		logger.info("loaded event DB size : {}", events.size());
 	}
+	
+	
 
 	@RequestMapping("/search/{filter}")
 	public ResponseEntity<List<Event>> searchWithFilter(@PathVariable("filter") String filter) {
