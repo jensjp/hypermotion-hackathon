@@ -101,10 +101,14 @@ public class EventSources {
 		Map<String, Object> data = mapToJson((InputStream)client.get().getEntity());
 		data = (Map<String, Object>)data.get("AirportResource");
 		data = (Map<String, Object>)data.get("Airports");
-		List<Map<String, Object>> airports = (List<Map<String, Object>>)data.get("Airport"); 
+		Map<String, Object> airports = (Map<String, Object>)data.get("Airport"); 
 		if(airports != null){
-		 	Map<String, Object> m=(Map<String, Object>)((Map<String, Object>)airports.get(0).get("Position")).get("Coordinate");
-			Coordinates c=new Coordinates(Double.parseDouble((String)m.get("Latitude")),Double.parseDouble((String)m.get("Longitude")));
+		 	Map<String, Object> m1=(Map<String, Object>)airports.get("Position");
+		 	Map<String, Object> m=(Map<String, Object>)m1.get("Coordinate");
+		 	
+		 	Double d1=(Double) m.get("Latitude");
+		 	Double d2=(Double) m.get("Longitude");
+			Coordinates c=new Coordinates(d1.doubleValue(),d2.doubleValue());
 			return c;
 		}
 		

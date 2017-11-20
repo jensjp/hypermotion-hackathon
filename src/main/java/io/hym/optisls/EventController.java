@@ -38,7 +38,7 @@ public class EventController implements InitializingBean{
 			Event e = new Event();
 			e.decode(line);
 			
-			if(e.getType().equals("sports")) {					
+			if(e.getKlass().equals("sports")) {					
 				Supplier s=new Supplier();
 				s.setPlace("New York");
 				s.setAirline("LH");
@@ -48,7 +48,7 @@ public class EventController implements InitializingBean{
 				e.getSuppliers().add(s);					
 			}
 			
-			if(e.getType().equals("festivals")) {					
+			if(e.getKlass().equals("festivals")) {					
 				Supplier s=new Supplier();
 				s.setPlace("Chicago");
 				s.setAirline("LH");
@@ -58,7 +58,7 @@ public class EventController implements InitializingBean{
 				e.getSuppliers().add(s);					
 			}
 			
-			if(e.getType().equals("disasters")) {					
+			if(e.getKlass().equals("disasters")) {					
 				Supplier s=new Supplier();
 				s.setPlace("Frankfurt am Main");
 				s.setAirline("LH");
