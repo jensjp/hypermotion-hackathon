@@ -93,7 +93,7 @@ public class EventSources {
 	 */
 	public static Coordinates getAirportCoordinates(String string) throws Exception {
 		
-		WebClient client = WebClient.create("airports/"+string+"?limit=1&offset=0&LHoperated=1");
+		WebClient client = WebClient.create("https://api.lufthansa.com/v1/references/airports/"+string+"?limit=1&offset=0&LHoperated=1");
 		client.accept(MediaType.APPLICATION_JSON);
 		client.header("Authorization", "Bearer hnrh4aqx4vh4ze99s9ub7f2x");
 		mapToJson((InputStream)client.get().getEntity());
