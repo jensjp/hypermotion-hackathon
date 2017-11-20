@@ -71,28 +71,8 @@ public class EventSources {
 					e.setPlace((String)arp.get("AirportCode"));
 					System.out.println("Got :" + e.getPlace());
 					break;
-				}
-				
-				if(e.getType().equals("sports")) {					
-					Supplier s=new Supplier();
-					s.setPlace("New York");
-					s.setAirline("LH");
-					s.setCoordinates(getAirportCoordinates("JFK"));
-					s.setVolume(20.0);
-					s.setWeight(2000.0);
-					e.getSuppliers().add(s);					
-				}
-				
-				if(e.getType().equals("festivals")) {					
-					Supplier s=new Supplier();
-					s.setPlace("Chicago");
-					s.setAirline("LH");
-					s.setCoordinates(getAirportCoordinates("ORD"));
-					s.setVolume(25.0);
-					s.setWeight(2500.0);
-					e.getSuppliers().add(s);					
-				}
-				
+				}				
+						
 			}else{
 				System.err.println("Unable to find airport");
 			}
@@ -111,7 +91,7 @@ public class EventSources {
 	 * @param string
 	 * @throws Exception 
 	 */
-	private static Coordinates getAirportCoordinates(String string) throws Exception {
+	public static Coordinates getAirportCoordinates(String string) throws Exception {
 		
 		WebClient client = WebClient.create("airports/"+string+"?limit=1&offset=0&LHoperated=1");
 		client.accept(MediaType.APPLICATION_JSON);
