@@ -37,6 +37,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
 import io.hym.optisls.model.Coordinates;
 import io.hym.optisls.model.Event;
+import io.hym.optisls.model.Supplier;
 
 /**
  * @author jens
@@ -71,6 +72,27 @@ public class EventSources {
 					System.out.println("Got :" + e.getPlace());
 					break;
 				}
+				
+				if(e.getType().equals("sports")) {					
+					Supplier s=new Supplier();
+					s.setPlace("New York");
+					s.setAirline("LH");
+					s.setCoordinates(getAirportCoordinates("JFK"));
+					s.setVolume(20.0);
+					s.setWeight(2000.0);
+					e.getSuppliers().add(s);					
+				}
+				
+				if(e.getType().equals("festivals")) {					
+					Supplier s=new Supplier();
+					s.setPlace("Chicago");
+					s.setAirline("LH");
+					s.setCoordinates(getAirportCoordinates("ORD"));
+					s.setVolume(25.0);
+					s.setWeight(2500.0);
+					e.getSuppliers().add(s);					
+				}
+				
 			}else{
 				System.err.println("Unable to find airport");
 			}
@@ -84,6 +106,31 @@ public class EventSources {
 		bw.close();
 	}
 	
+	/**
+	 * 
+	 * @param string
+	 * @throws Exception 
+	 */
+	private static Coordinates getAirportCoordinates(String string) throws Exception {
+		
+		WebClient client = WebClient.create("airports/"+string+"?limit=1&offset=0&LHoperated=1");
+		client.accept(MediaType.APPLICATION_JSON);
+		client.header("Authorization", "Bearer hnrh4aqx4vh4ze99s9ub7f2x");
+		mapToJson((InputStream)client.get().getEntity());
+		
+		Map<String, Object> data = mapToJson((InputStream)client.get().getEntity());
+		data = (Map<String, Object>)data.get("AirportResource");
+		data = (Map<String, Object>)data.get("Airports");
+		List<Map<String, Object>> airports = (List<Map<String, Object>>)data.get("Airport"); 
+		if(airports != null){
+		 	Map<String, Object> m=(Map<String, Object>)((Map<String, Object>)airports.get(0).get("Position")).get("Coordinate");
+			Coordinates c=new Coordinates(Double.parseDouble((String)m.get("Latitude")),Double.parseDouble((String)m.get("Longitude")));
+			return c;
+		}
+		
+		return null;
+	}
+
 	public static void retrieveAllPHQEvents() throws Exception{
 		List<Event> events = new ArrayList<>();
 		for(int x = 0 ; x < 1000; x++){
