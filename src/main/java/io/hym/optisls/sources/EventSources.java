@@ -86,13 +86,16 @@ public class EventSources {
 		bw.close();
 	}
 	
+	static final Map<String, Coordinates> COORD_CACHE = new HashMap<>();
 	/**
 	 * 
 	 * @param string
 	 * @throws Exception 
 	 */
 	public static Coordinates getAirportCoordinates(String string) throws Exception {
-		
+		if(COORD_CACHE.containsKey(string)){
+			return COORD_CACHE.get(string);
+		}
 		WebClient client = WebClient.create("https://api.lufthansa.com/v1/references/airports/"+string+"?limit=1&offset=0&LHoperated=1");
 		client.accept(MediaType.APPLICATION_JSON);
 		client.header("Authorization", "Bearer hnrh4aqx4vh4ze99s9ub7f2x");
@@ -109,9 +112,9 @@ public class EventSources {
 		 	Double d1=(Double) m.get("Latitude");
 		 	Double d2=(Double) m.get("Longitude");
 			Coordinates c=new Coordinates(d1.doubleValue(),d2.doubleValue());
+			COORD_CACHE.put(string, c);
 			return c;
 		}
-		
 		return null;
 	}
 

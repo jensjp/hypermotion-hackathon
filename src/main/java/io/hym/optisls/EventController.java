@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -38,37 +39,31 @@ public class EventController implements InitializingBean{
 			Event e = new Event();
 			e.decode(line);
 			
-			if(e.getKlass().equals("sports")) {					
-				Supplier s=new Supplier();
-				s.setPlace("New York");
-				s.setAirline("LH");
-				s.setCoordinates(EventSources.getAirportCoordinates("JFK"));
-				s.setVolume(20.0);
-				s.setWeight(2000.0);
-				e.getSuppliers().add(s);					
+			switch(e.getKlass()){
+				case "airport-delays" :
+				case "severe-weather" :	
+					break;
+				case "disasters" :
+					Supplier s = new Supplier();
+					s.setPlace("Frankfurt am Main");
+					s.setAirline("LH");
+					s.setCoordinates(EventSources.getAirportCoordinates("FRA"));
+					s.setVolume(25.0);
+					s.setWeight(2500.0);
+					e.getSuppliers().add(s);
+					break;
+				case "expos" :
+					e.getSuppliers().addAll(populateExpos(e.getPlace()));
+					break;
+				case "festivals" :
+				case "performing-arts" :
+				case "concerts" :	
+					e.getSuppliers().addAll(populateFestivals(e.getPlace()));
+					break;
+				case "sports" :
+					e.getSuppliers().addAll(populateSports(e.getPlace()));
+					break;
 			}
-			
-			if(e.getKlass().equals("festivals")) {					
-				Supplier s=new Supplier();
-				s.setPlace("Chicago");
-				s.setAirline("LH");
-				s.setCoordinates(EventSources.getAirportCoordinates("ORD"));
-				s.setVolume(25.0);
-				s.setWeight(2500.0);
-				e.getSuppliers().add(s);					
-			}
-			
-			if(e.getKlass().equals("disasters")) {					
-				Supplier s=new Supplier();
-				s.setPlace("Frankfurt am Main");
-				s.setAirline("LH");
-				s.setCoordinates(EventSources.getAirportCoordinates("FRA"));
-				s.setVolume(25.0);
-				s.setWeight(2500.0);
-				e.getSuppliers().add(s);					
-			}
-	
-			
 			if(e.getDate() == null)
 				System.err.println(line);
 			else
@@ -77,7 +72,161 @@ public class EventController implements InitializingBean{
 		logger.info("loaded event DB size : {}", events.size());
 	}
 	
+	private static List<Supplier> populateExpos(String airport) throws Exception{
+		Random r = new Random();
+		int numSupp = r.nextInt(4);
+		List<Supplier> ans = new ArrayList<>(numSupp);
+		Supplier s = null;
+		for(int x = 0 ; x < numSupp; x++){
+			switch(x){
+			case 0 : 
+				s = new Supplier();
+				s.setPlace("Frankfurt am Main");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("FRA"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				if(!airport.equals("FRA"))
+					ans.add(s);
+				break;
+			case 1 : 
+				s = new Supplier();
+				s.setPlace("Narita");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("NRT"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				if(!airport.equals("NRT"))
+					ans.add(s);	
+				break;
+			case 2 : 
+				s = new Supplier();
+				s.setPlace("Hongkong");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("HKG"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				if(!airport.equals("HKG"))
+					ans.add(s);	
+				break;
+			case 3 : 
+				s = new Supplier();
+				s.setPlace("LosAngeles");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("LAX"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				if(!airport.equals("LAX"))
+					ans.add(s);	
+				break;	
+			}
+		}
+		return ans;
+	}
 	
+	private static List<Supplier> populateSports(String airport) throws Exception{
+		Random r = new Random();
+		int numSupp = r.nextInt(4);
+		List<Supplier> ans = new ArrayList<>(numSupp);
+		Supplier s = null;
+		for(int x = 0 ; x < numSupp; x++){
+			switch(x){
+			case 0 : 
+				s = new Supplier();
+				s.setPlace("Frankfurt am Main");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("FRA"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				if(!airport.equals("FRA"))
+					ans.add(s);
+				break;
+			case 1 : 
+				s = new Supplier();
+				s.setPlace("London");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("LHR"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				if(!airport.equals("LHR"))
+					ans.add(s);	
+				break;
+			case 2 : 
+				s = new Supplier();
+				s.setPlace("Sao Paulo");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("GRU"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				if(!airport.equals("GRU"))
+					ans.add(s);	
+				break;
+			case 3 : 
+				s = new Supplier();
+				s.setPlace("LosAngeles");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("LAX"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				if(!airport.equals("LAX"))
+					ans.add(s);	
+				break;	
+			}
+		}
+		return ans;
+	}
+	
+	private static List<Supplier> populateFestivals(String airport) throws Exception{
+		Random r = new Random();
+		int numSupp = r.nextInt(4);
+		List<Supplier> ans = new ArrayList<>(numSupp);
+		Supplier s = null;
+		for(int x = 0 ; x < numSupp; x++){
+			switch(x){
+			case 0 : 
+				s = new Supplier();
+				s.setPlace("Frankfurt am Main");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("FRA"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				if(!airport.equals("FRA"))
+					ans.add(s);
+				break;
+			case 1 : 
+				s = new Supplier();
+				s.setPlace("Paris");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("CDG"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				if(!airport.equals("CDG"))
+					ans.add(s);	
+				break;
+			case 2 : 
+				s = new Supplier();
+				s.setPlace("London");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("LHR"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				if(!airport.equals("LHR"))
+					ans.add(s);	
+				break;
+			case 3 : 
+				s = new Supplier();
+				s.setPlace("Newyork");
+				s.setAirline("LH");
+				s.setCoordinates(EventSources.getAirportCoordinates("JFK"));
+				s.setVolume(25.0);
+				s.setWeight(2500.0);
+				if(!airport.equals("JFK"))
+					ans.add(s);	
+				break;	
+			}
+		}
+		return ans;
+	}
 
 	@RequestMapping("/search/{filter}")
 	public ResponseEntity<List<Event>> searchWithFilter(@PathVariable("filter") String filter) {
