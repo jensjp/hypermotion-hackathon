@@ -174,7 +174,7 @@ function createMap(data, showSupply) {
 																	geodesic : true,
 																	strokeColor : '#FAFE09',
 																	strokeOpacity : 1.0,
-																	strokeWeight : 1
+																	strokeWeight : 2
 																});
 														flightPath.setMap(map);
 													} else {
@@ -228,7 +228,7 @@ function createMap(data, showSupply) {
 																	geodesic : true,
 																	strokeColor : _oneColorCode,
 																	strokeOpacity : 1.0,
-																	strokeWeight : 1
+																	strokeWeight : 2
 																});
 														flightPath.setMap(map);
 
@@ -241,7 +241,7 @@ function createMap(data, showSupply) {
 																	geodesic : true,
 																	strokeColor : _twoColorCode,
 																	strokeOpacity : 1.0,
-																	strokeWeight : 1
+																	strokeWeight : 2
 																});
 														flightPath.setMap(map);
 

@@ -6,6 +6,7 @@ package io.hym.optisls.sources;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -51,6 +53,48 @@ public class FlightSources {
 	static final DateFormat PHQ_DF = new SimpleDateFormat(PHQ_DFS);
 	
 	static final Map<String, Connections> CONN_CACHE = new HashMap<>(); 
+	static{
+		try {
+			loadConnCache();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void persistConnCache() throws Exception{
+		BufferedWriter bw = Files.newBufferedWriter(Paths.get("/Users/jens/tmp", "conns.csv"), StandardOpenOption.CREATE);
+		for(Map.Entry<String, Connections> e : CONN_CACHE.entrySet()){
+			if(e.getValue() == null || e.getValue().getCoordinates() == null)
+				continue;
+			StringBuilder sbul = new StringBuilder();
+			sbul.append(e.getKey()).append(",").append(e.getValue().encode()).append("\n");
+			bw.write(sbul.toString());
+		}
+		bw.flush();
+		bw.close();
+	}
+	
+	public static void loadConnCache() throws Exception{
+		BufferedReader br = new BufferedReader(new InputStreamReader(EventSources.class.getResourceAsStream("/data/conns.csv")));
+		Pattern ptrn = Pattern.compile(",");
+		for(String line = br.readLine(); line != null && line.trim().length() > 0 ; line = br.readLine()){
+			String[] splts = ptrn.split(line);
+			Connections conn = new Connections();
+			for(int x = 0 ; x < splts.length; x++){
+				String tkn = splts[x];
+				switch(x){
+					case 0 : CONN_CACHE.put(tkn, conn); break;
+					case 1 : conn.setLH(Boolean.parseBoolean(tkn)); break;
+					case 2 : conn.setPlace(tkn); break;
+					case 3 : conn.setCoordinates(new Coordinates(0, 0));
+							 conn.getCoordinates().setLat(Double.parseDouble(tkn));
+							 break;
+					case 4 : conn.getCoordinates().setLng(Double.parseDouble(tkn)); break;
+				}
+			}
+		}
+	}
 	
 	public static Connections retrieveAllFlight(String origin, String destination, String dateTime,String product) throws Exception{
 		String key = origin + "-" + destination;
