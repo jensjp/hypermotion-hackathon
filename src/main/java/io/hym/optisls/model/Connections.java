@@ -9,7 +9,7 @@ package io.hym.optisls.model;
  */
 public class Connections {
 
-	private boolean isLH;
+	private boolean isLH = true;
 	private Coordinates coordinates;
 	private String place;
 	

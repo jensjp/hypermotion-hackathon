@@ -98,11 +98,16 @@ public class EventSources {
 		}
 		WebClient client = WebClient.create("https://api.lufthansa.com/v1/references/airports/"+string+"?limit=1&offset=0&LHoperated=1");
 		client.accept(MediaType.APPLICATION_JSON);
-		client.header("Authorization", "Bearer hnrh4aqx4vh4ze99s9ub7f2x");
+		client.header("Authorization", "Bearer t3zysa55fd5syhw8gjnmavak");
 		mapToJson((InputStream)client.get().getEntity());
 		
 		Map<String, Object> data = mapToJson((InputStream)client.get().getEntity());
 		data = (Map<String, Object>)data.get("AirportResource");
+		client.close();
+		if(data == null){
+			System.err.println("unable to find coordinates for " + string);
+			return null;
+		}
 		data = (Map<String, Object>)data.get("Airports");
 		Map<String, Object> airports = (Map<String, Object>)data.get("Airport"); 
 		if(airports != null){
@@ -114,6 +119,8 @@ public class EventSources {
 			Coordinates c=new Coordinates(d1.doubleValue(),d2.doubleValue());
 			COORD_CACHE.put(string, c);
 			return c;
+		}else{
+			System.err.println("Unable to find coordinates for : " + string);
 		}
 		return null;
 	}

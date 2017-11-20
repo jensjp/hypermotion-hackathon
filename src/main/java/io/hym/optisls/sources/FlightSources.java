@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
+import io.hym.optisls.model.Connections;
 import io.hym.optisls.model.Coordinates;
 import io.hym.optisls.model.Event;
 import io.hym.optisls.model.Supplier;
@@ -48,24 +49,54 @@ public class FlightSources {
 
 	static final String PHQ_DFS = "yyyy-MM-dd";
 	static final DateFormat PHQ_DF = new SimpleDateFormat(PHQ_DFS);
-
-	public static void retrieveAllFlight(String origin, String destination, String dateTime,String product) throws Exception{
-		
-		
-		
-		
+	
+	static final Map<String, Connections> CONN_CACHE = new HashMap<>(); 
+	
+	public static Connections retrieveAllFlight(String origin, String destination, String dateTime,String product) throws Exception{
+		String key = origin + "-" + destination;
+		if(CONN_CACHE.containsKey(key))
+			return CONN_CACHE.get(key);
+		Map<String, Object> dataOrg = retrieveFlights(origin, destination, dateTime, product);
+		Map<String, Object> data = (Map<String, Object>)dataOrg.get("ScheduleResource");
+		if(data == null){
+			Connections conn = new Connections();
+			CONN_CACHE.put(key, conn);
+			System.err.println(dataOrg);
+			return conn;
+		}
+		data = (Map<String, Object>)data.get("Schedule");
+		Object flightsOrFlight = data.get("Flight");
+		Connections conn = new Connections();
+		if(flightsOrFlight instanceof List){
+			List<Map<String, Object>> flights = (List<Map<String, Object>>)flightsOrFlight;
+			for(Map<String, Object> flight : flights){
+				Map<String, Object> arrival = (Map<String, Object>)flight.get("Arrival");
+				conn.setPlace((String)arrival.get("AirportCode"));
+				conn.setCoordinates(EventSources.getAirportCoordinates(conn.getPlace()));
+				String carrier = (String)((Map<String, Object>)flight.get("MarketingCarrier")).get("AirlineID");
+				conn.setLH("LH".equals(carrier));
+				break;
+			}
+		}else{
+			Map<String, Object> flight = (Map<String, Object>)flightsOrFlight;
+			Map<String, Object> arrival = (Map<String, Object>)flight.get("Arrival");
+			conn.setPlace((String)arrival.get("AirportCode"));
+			conn.setCoordinates(EventSources.getAirportCoordinates(conn.getPlace()));
+			String carrier = (String)((Map<String, Object>)flight.get("MarketingCarrier")).get("AirlineID");
+			conn.setLH("LH".equals(carrier));
+		}
+		conn = conn.isLH() ? null : conn;
+		CONN_CACHE.put(key, conn);
+		return conn;
 	}
 	
 	public static Map<String, Object> retrieveFlights(String origin, String destination, String dateTime,String product) throws Exception{
 		WebClient client = WebClient.create("https://api.lufthansa.com/v1/operations/schedules/"
-				+ origin +"-"
+				+ origin +"/"
 				+ destination
-				+ "2017-11-23?directFlights=0");
+				+ "/2017-11-20?directFlights=0&limit=1");
 		client.accept(MediaType.APPLICATION_JSON);
-		
-		
-		client.header("Authorization", "Bearer O1fYKqxCyOGAEJWzJPqDOoJRANZD41");
-		
+		client.header("Authorization", "Bearer 2jum7x4zmba5undfz8d9j6eh");
 		Response resp = client.get();
 		Map<String, Object> data = mapToJson((InputStream)resp.getEntity());
 		client.close();
