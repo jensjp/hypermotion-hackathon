@@ -14,7 +14,8 @@ public class Supplier {
 	private Coordinates coordinates;
 	private double weight;
 	private double volume;
-
+	private Connections connection;
+	
 	/**
 	 * @return the place
 	 */
@@ -83,4 +84,19 @@ public class Supplier {
 		this.coordinates = coordinates;
 	}
 
+	/**
+	 * @return the connection
+	 */
+	public Connections getConnection() {
+		return connection;
+	}
+
+	/**
+	 * @param connection the connection to set
+	 */
+	public void setConnection(Connections connection) {
+		this.connection = connection;
+	}
+
+	
 }
