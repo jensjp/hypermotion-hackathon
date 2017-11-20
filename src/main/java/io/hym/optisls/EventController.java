@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import io.hym.optisls.model.Connections;
 import io.hym.optisls.model.Event;
 import io.hym.optisls.model.Supplier;
 import io.hym.optisls.sources.EventSources;
+import io.hym.optisls.sources.FlightSources;
 
 @RestController
 public class EventController implements InitializingBean{
@@ -45,7 +47,7 @@ public class EventController implements InitializingBean{
 					break;
 				case "disasters" :
 					Supplier s = new Supplier();
-					s.setPlace("Frankfurt am Main");
+					s.setPlace("FRA");
 					s.setAirline("LH");
 					s.setCoordinates(EventSources.getAirportCoordinates("FRA"));
 					s.setVolume(25.0);
@@ -66,10 +68,26 @@ public class EventController implements InitializingBean{
 			}
 			if(e.getDate() == null)
 				System.err.println(line);
-			else
+			else{
+				populateConnections(e);
 				events.add(e);
+			}
 		}
 		logger.info("loaded event DB size : {}", events.size());
+	}
+	
+	private void populateConnections(Event e) throws Exception{
+		if(e.getSuppliers() != null){
+			List<Supplier> deletes = new ArrayList<>();
+			for(Supplier s : e.getSuppliers()){
+				Connections conn = FlightSources.retrieveAllFlight(s.getPlace(), e.getPlace(), null, null);
+				if(conn != null && conn.getPlace() == null){
+					deletes.add(s);
+				}else
+					s.setConnection(conn);
+			}
+			e.getSuppliers().removeAll(deletes);
+		}
 	}
 	
 	private static List<Supplier> populateExpos(String airport) throws Exception{
@@ -81,7 +99,7 @@ public class EventController implements InitializingBean{
 			switch(x){
 			case 0 : 
 				s = new Supplier();
-				s.setPlace("Frankfurt am Main");
+				s.setPlace("FRA");
 				s.setAirline("LH");
 				s.setCoordinates(EventSources.getAirportCoordinates("FRA"));
 				s.setVolume(25.0);
@@ -91,7 +109,7 @@ public class EventController implements InitializingBean{
 				break;
 			case 1 : 
 				s = new Supplier();
-				s.setPlace("Narita");
+				s.setPlace("NRT");
 				s.setAirline("LH");
 				s.setCoordinates(EventSources.getAirportCoordinates("NRT"));
 				s.setVolume(25.0);
@@ -101,7 +119,7 @@ public class EventController implements InitializingBean{
 				break;
 			case 2 : 
 				s = new Supplier();
-				s.setPlace("Hongkong");
+				s.setPlace("HKG");
 				s.setAirline("LH");
 				s.setCoordinates(EventSources.getAirportCoordinates("HKG"));
 				s.setVolume(25.0);
@@ -111,7 +129,7 @@ public class EventController implements InitializingBean{
 				break;
 			case 3 : 
 				s = new Supplier();
-				s.setPlace("LosAngeles");
+				s.setPlace("LAX");
 				s.setAirline("LH");
 				s.setCoordinates(EventSources.getAirportCoordinates("LAX"));
 				s.setVolume(25.0);
@@ -133,7 +151,7 @@ public class EventController implements InitializingBean{
 			switch(x){
 			case 0 : 
 				s = new Supplier();
-				s.setPlace("Frankfurt am Main");
+				s.setPlace("FRA");
 				s.setAirline("LH");
 				s.setCoordinates(EventSources.getAirportCoordinates("FRA"));
 				s.setVolume(25.0);
@@ -143,7 +161,7 @@ public class EventController implements InitializingBean{
 				break;
 			case 1 : 
 				s = new Supplier();
-				s.setPlace("London");
+				s.setPlace("LHR");
 				s.setAirline("LH");
 				s.setCoordinates(EventSources.getAirportCoordinates("LHR"));
 				s.setVolume(25.0);
@@ -153,7 +171,7 @@ public class EventController implements InitializingBean{
 				break;
 			case 2 : 
 				s = new Supplier();
-				s.setPlace("Sao Paulo");
+				s.setPlace("GRU");
 				s.setAirline("LH");
 				s.setCoordinates(EventSources.getAirportCoordinates("GRU"));
 				s.setVolume(25.0);
@@ -163,7 +181,7 @@ public class EventController implements InitializingBean{
 				break;
 			case 3 : 
 				s = new Supplier();
-				s.setPlace("LosAngeles");
+				s.setPlace("LAX");
 				s.setAirline("LH");
 				s.setCoordinates(EventSources.getAirportCoordinates("LAX"));
 				s.setVolume(25.0);
@@ -185,7 +203,7 @@ public class EventController implements InitializingBean{
 			switch(x){
 			case 0 : 
 				s = new Supplier();
-				s.setPlace("Frankfurt am Main");
+				s.setPlace("FRA");
 				s.setAirline("LH");
 				s.setCoordinates(EventSources.getAirportCoordinates("FRA"));
 				s.setVolume(25.0);
@@ -195,7 +213,7 @@ public class EventController implements InitializingBean{
 				break;
 			case 1 : 
 				s = new Supplier();
-				s.setPlace("Paris");
+				s.setPlace("CDG");
 				s.setAirline("LH");
 				s.setCoordinates(EventSources.getAirportCoordinates("CDG"));
 				s.setVolume(25.0);
@@ -205,7 +223,7 @@ public class EventController implements InitializingBean{
 				break;
 			case 2 : 
 				s = new Supplier();
-				s.setPlace("London");
+				s.setPlace("LHR");
 				s.setAirline("LH");
 				s.setCoordinates(EventSources.getAirportCoordinates("LHR"));
 				s.setVolume(25.0);
@@ -215,7 +233,7 @@ public class EventController implements InitializingBean{
 				break;
 			case 3 : 
 				s = new Supplier();
-				s.setPlace("Newyork");
+				s.setPlace("JFK");
 				s.setAirline("LH");
 				s.setCoordinates(EventSources.getAirportCoordinates("JFK"));
 				s.setVolume(25.0);
