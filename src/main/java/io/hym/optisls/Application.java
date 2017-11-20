@@ -15,12 +15,13 @@ import org.springframework.context.ConfigurableApplicationContext;
  *
  */
 @SpringBootApplication
-public class Application extends SpringBootServletInitializer{
+public class Application extends SpringBootServletInitializer {
 
-	
-	
-	/* (non-Javadoc)
-	 * @see org.springframework.boot.web.support.SpringBootServletInitializer#configure(org.springframework.boot.builder.SpringApplicationBuilder)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.boot.web.support.SpringBootServletInitializer#
+	 * configure(org.springframework.boot.builder.SpringApplicationBuilder)
 	 */
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
@@ -30,7 +31,7 @@ public class Application extends SpringBootServletInitializer{
 	/**
 	 * @param args
 	 */
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) throws Exception {
 		SpringApplication application = new SpringApplication(Application.class);
 		application.setWebEnvironment(true);
 		application.setBannerMode(Banner.Mode.OFF);

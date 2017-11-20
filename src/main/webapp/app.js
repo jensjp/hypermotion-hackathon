@@ -36,7 +36,7 @@ $(document).ready(function(event) {
 
 });
 
-function tryFilter(includeSupply){
+function tryFilter(includeSupply) {
 	var filterVals = [];
 	$('#filter_container').find('.catg-input').each(function(index, val) {
 		if ($(val).is(':checked')) {
@@ -100,6 +100,7 @@ function createMap(data, showSupply) {
 
 							var infowindow = new google.maps.InfoWindow({
 								content : '<strong><div>' + value.desc
+										+ '</div><div>' + value.klass
 										+ '</div><div>' + value.weight
 										+ ' KG</div><div>' + value.volume
 										+ ' CBM</div></strong>',
