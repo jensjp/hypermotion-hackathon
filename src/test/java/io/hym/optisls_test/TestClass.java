@@ -7,6 +7,8 @@ import java.util.List;
 
 import io.hym.optisls.EventController;
 import io.hym.optisls.model.Event;
+import io.hym.optisls.sources.EventSources;
+import io.hym.optisls.sources.FlightSources;
 
 /**
  * @author jens
@@ -20,12 +22,9 @@ public class TestClass {
 	public static void main(String[] args) throws Exception{
 		EventController ctr = new EventController();
 		ctr.afterPropertiesSet();
-		List<Event> e = ctr.getEvents();
-		for(Event ev : e){
-			if(ev.getDate() == null){
-				System.out.println(ev.encode());
-			}
-		}
+		//EventSources.persistCoordCache();
+		//FlightSources.persistConnCache();
+		System.out.println("Done");
 	}
 
 }

@@ -13,6 +13,12 @@ public class Connections {
 	private Coordinates coordinates;
 	private String place;
 	
+	public String encode(){
+		StringBuilder sbul = new StringBuilder();
+		sbul.append(isLH).append(",").append(place).append(",")
+			.append(coordinates.encode());
+		return sbul.toString();
+	}
 	
 	/**
 	 * @return the isLH

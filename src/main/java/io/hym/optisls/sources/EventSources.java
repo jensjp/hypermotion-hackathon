@@ -6,6 +6,7 @@ package io.hym.optisls.sources;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -20,6 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -35,6 +37,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 
+import io.hym.optisls.model.Connections;
 import io.hym.optisls.model.Coordinates;
 import io.hym.optisls.model.Event;
 import io.hym.optisls.model.Supplier;
@@ -87,6 +90,14 @@ public class EventSources {
 	}
 	
 	static final Map<String, Coordinates> COORD_CACHE = new HashMap<>();
+	static{
+		try {
+			loadCoordCache();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	/**
 	 * 
 	 * @param string
@@ -125,6 +136,34 @@ public class EventSources {
 		return null;
 	}
 
+	public static void persistCoordCache() throws Exception{
+		BufferedWriter bw = Files.newBufferedWriter(Paths.get("/Users/jens/tmp", "coords.csv"), StandardOpenOption.CREATE);
+		for(Map.Entry<String, Coordinates> e : COORD_CACHE.entrySet()){
+			StringBuilder sbul = new StringBuilder();
+			sbul.append(e.getKey()).append(",").append(e.getValue().encode()).append("\n");
+			bw.write(sbul.toString());
+		}
+		bw.flush();
+		bw.close();
+	}
+	
+	private static void loadCoordCache() throws Exception{
+		BufferedReader br = new BufferedReader(new InputStreamReader(EventSources.class.getResourceAsStream("/data/coords.csv")));
+		Pattern ptrn = Pattern.compile(",");
+		for(String line = br.readLine(); line != null && line.trim().length() > 0 ; line = br.readLine()){
+			String[] splts = ptrn.split(line);
+			Coordinates coord = new Coordinates(0, 0);
+			for(int x = 0 ; x < splts.length; x++){
+				String tkn = splts[x];
+				switch(x){
+					case 0 : COORD_CACHE.put(tkn, coord); break;
+					case 1 : coord.setLat(Double.parseDouble(tkn)); break;
+					case 2 : coord.setLng(Double.parseDouble(tkn)); break;
+				}
+			}
+		}
+	}
+	
 	public static void retrieveAllPHQEvents() throws Exception{
 		List<Event> events = new ArrayList<>();
 		for(int x = 0 ; x < 1000; x++){

@@ -70,6 +70,10 @@ public class EventController implements InitializingBean{
 				System.err.println(line);
 			else{
 				populateConnections(e);
+				if(e.getSuppliers() != null){
+					e.setWeight(e.getSuppliers().stream().mapToDouble(s -> s.getWeight()).sum());
+					e.setVolume(e.getSuppliers().stream().mapToDouble(s -> s.getVolume()).sum());
+				}
 				events.add(e);
 			}
 		}
