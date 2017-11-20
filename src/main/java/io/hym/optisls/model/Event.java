@@ -6,6 +6,7 @@ package io.hym.optisls.model;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -139,16 +140,15 @@ public class Event {
 	 * @return the suppliers
 	 */
 	public List<Supplier> getSuppliers() {
+		
+		if(suppliers==null) {
+			suppliers=new ArrayList<Supplier>();
+		}
+		
 		return suppliers;
 	}
 
-	/**
-	 * @param suppliers
-	 *            the suppliers to set
-	 */
-	public void setSuppliers(List<Supplier> suppliers) {
-		this.suppliers = suppliers;
-	}
+	
 
 	public Coordinates getCoordinates() {
 		return coordinates;
